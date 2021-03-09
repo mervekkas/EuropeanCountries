@@ -77,4 +77,5 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     implementation "com.android.support:design:$supportVersion"
     implementation 'com.mikhaellopez:circularimageview:4.2.0'
+    implementation 'wu.seal.jsontokotlin:library:3.6.1'
 }
