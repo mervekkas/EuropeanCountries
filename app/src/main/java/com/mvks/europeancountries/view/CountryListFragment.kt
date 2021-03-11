@@ -1,28 +1,30 @@
 package com.mvks.europeancountries.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.MutableLiveData
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mvks.europeancountries.R
 import com.mvks.europeancountries.adapter.CountryListRecyclerAdapter
 import com.mvks.europeancountries.model.Country
+import com.mvks.europeancountries.viewmodel.CountryDetailViewModel
 import com.mvks.europeancountries.viewmodel.CountryListViewModel
 import kotlinx.android.synthetic.main.fragment_country_list.*
 
-class CountryListFragment : Fragment() {
-    private lateinit var viewModel : CountryListViewModel
-    private val recyclerCountryAdapter = CountryListRecyclerAdapter(arrayListOf())
+class CountryListFragment : Fragment(), CountryListRecyclerAdapter.CountryAdapterListener {
+    private lateinit var viewModel: CountryListViewModel
+    private val recyclerCountryAdapter = CountryListRecyclerAdapter(arrayListOf(), this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,29 +51,29 @@ class CountryListFragment : Fragment() {
         observeLiveData()
     }
 
-     fun observeLiveData() {
+    fun observeLiveData() {
         viewModel.countryList.observe(viewLifecycleOwner, Observer {
             it?.let {
                 rv_country_list.visibility = View.VISIBLE
                 recyclerCountryAdapter.countryListRefresh(it)
             }
         })
-         viewModel.countryErroMessage.observe(viewLifecycleOwner, Observer {
-             it?.let {
-                 if (it)
-                 errorVisible()
-                 else
-                     listVisible()
-             }
-         })
-         viewModel.loading.observe(viewLifecycleOwner, Observer {
-             it?.let {
-                 if (it)
-                     loadingVisible()
-                 else
-                     listVisible()
-             }
-         })
+        viewModel.countryErroMessage.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it)
+                    errorVisible()
+                else
+                    listVisible()
+            }
+        })
+        viewModel.loading.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it)
+                    loadingVisible()
+                else
+                    listVisible()
+            }
+        })
     }
 
     private fun errorVisible() {
@@ -79,13 +81,21 @@ class CountryListFragment : Fragment() {
         tv_country_list_error_message.visibility = View.VISIBLE
         progress_country_list.visibility = View.GONE
     }
+
     private fun loadingVisible() {
         rv_country_list.visibility = View.GONE
         progress_country_list.visibility = View.VISIBLE
     }
+
     private fun listVisible() {
         rv_country_list.visibility = View.VISIBLE
         progress_country_list.visibility = View.GONE
         tv_country_list_error_message.visibility = View.GONE
+    }
+
+    override fun onClicked(model: Country) {
+        val fragment = CountryDetailFragment()
+        fragment.countryLiveData.value = model
+        fragmentManager?.beginTransaction()?.replace(R.id.container_main, fragment)?.addToBackStack("Tag")?.commit()
     }
 }

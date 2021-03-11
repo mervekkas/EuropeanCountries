@@ -2,7 +2,6 @@ package com.mvks.europeancountries.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-
 data class Language(
     @SerializedName("iso639_1")
     @Expose

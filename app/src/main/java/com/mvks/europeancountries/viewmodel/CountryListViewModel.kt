@@ -17,7 +17,7 @@ class CountryListViewModel : ViewModel() {
     private val countryApiService = CountryApiService()
     private val disposable = CompositeDisposable()
 
-    fun refreshData(){
+    fun refreshData() {
         dataResponse()
     }
 
@@ -27,7 +27,7 @@ class CountryListViewModel : ViewModel() {
             countryApiService.getData()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<List<Country>>(){
+                .subscribeWith(object : DisposableSingleObserver<List<Country>>() {
                     override fun onSuccess(t: List<Country>) {
                         onSuccesValue(t)
                     }
@@ -46,11 +46,10 @@ class CountryListViewModel : ViewModel() {
         e.printStackTrace()
     }
 
-    private fun onSuccesValue(t: List<Country>) {
-        countryList.value = t
+    private fun onSuccesValue(countryL: List<Country>) {
+        countryList.value = countryL
         countryErroMessage.value = false
         loading.value = false
     }
-
 
 }

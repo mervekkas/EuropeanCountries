@@ -2,7 +2,6 @@ package com.mvks.europeancountries.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import java.util.*
 
 data class Country(
     @SerializedName("name")
@@ -35,18 +34,12 @@ data class Country(
     @SerializedName("population")
     @Expose
     val population:Int?,
-    @SerializedName("latlng")
-    @Expose
-    val latlng:List<Double>?,
     @SerializedName("demonym")
     @Expose
     val demonym:String?,
     @SerializedName("area")
     @Expose
     val area:Double?,
-    @SerializedName("gini")
-    @Expose
-    val gini:Object?,
     @SerializedName("timezones")
     @Expose
     val timezones:List<String>?,
@@ -59,25 +52,11 @@ data class Country(
     @SerializedName("numericCode")
     @Expose
     val numericCode:String?,
-    @SerializedName("currencies")
-    @Expose
-    val currencies:List<Currency>?,
     @SerializedName("languages")
     @Expose
     val languages:List<Language>?,
-    @SerializedName("translations")
-    @Expose
-    val translations:Translations?,
     @SerializedName("flag")
     @Expose
-    val flag:String?,
-    @SerializedName("regionalBlocs")
-    @Expose
-    val regionalBlocs:List<RegionalBloc>?,
-    @SerializedName("cioc")
-    @Expose
-    val cioc:String?
+    val flag:String?
 ) {
-
-
 }
