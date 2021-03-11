@@ -22,9 +22,5 @@
         <action
             android:id="@+id/action_countryDetailFragment_to_countryListFragment"
             app:destination="@id/countryListFragment" />
-        <argument
-            android:name="countryId"
-            app:argType="integer"
-            android:defaultValue="-1" />
     </fragment>
 </navigation>

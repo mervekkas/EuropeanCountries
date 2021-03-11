@@ -3,14 +3,14 @@ package com.mvks.europeancountries.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.mvks.europeancountries.R
 import com.mvks.europeancountries.model.Country
-import com.mvks.europeancountries.view.CountryListFragmentDirections
+import com.mvks.europeancountries.util.imageDownload
 import kotlinx.android.synthetic.main.item_country_list.view.*
 
-class CountryListRecyclerAdapter(val countryList: ArrayList<Country>) :
+
+class CountryListRecyclerAdapter(val countryList: ArrayList<Country>, var listener : CountryAdapterListener) :
     RecyclerView.Adapter<CountryListRecyclerAdapter.CountryViewHolder>() {
     class CountryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -27,20 +27,33 @@ class CountryListRecyclerAdapter(val countryList: ArrayList<Country>) :
     }
 
     override fun onBindViewHolder(holder: CountryViewHolder, position: Int) {
+        clickItem(holder.itemView,countryList,position)
         holder.itemView.tv_country_item_name.text = countryList.get(position).name
         holder.itemView.tv_country_item_subregion.text = countryList.get(position).subregion
         holder.itemView.tv_country_item_capital.text = countryList.get(position).capital
         holder.itemView.tv_country_item_population.text = countryList.get(position).population.toString()
-        clickItem(holder.itemView, position)
+        countryList.get(position).flag?.let { holder.itemView.img_country_item_flag.imageDownload(it) }
     }
 
-    fun clickItem(itemView: View, position: Int) {
+    private fun clickItem(itemView: View, newCountryList: List<Country>, position: Int) {
         itemView.setOnClickListener {
-            val action =
-                CountryListFragmentDirections.actionCountryListFragmentToCountryDetailFragment(0)
-            Navigation.findNavController(it).navigate(action)
+            listener.onClicked(newCountryList.get(position))
         }
     }
+
+    /*
+        fun clickItem(itemView: View, position: Int) {
+            itemView.setOnClickListener {
+
+                val action =
+                    CountryListFragmentDirections.actionCountryListFragmentToCountryDetailFragment(0)
+                Navigation.findNavController(it).navigate(action)
+            }
+        }*/
+    interface CountryAdapterListener{
+        fun onClicked(model:Country)
+    }
+
     fun countryListRefresh(newCountryList : List<Country>) {
         countryList.clear()
         countryList.addAll(newCountryList)
