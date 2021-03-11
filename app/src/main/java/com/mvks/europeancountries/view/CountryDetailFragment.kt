@@ -35,13 +35,13 @@ class CountryDetailFragment : Fragment() {
     fun observeLiveData() {
         countryLiveData.observe(viewLifecycleOwner, Observer {
             it?.let {
-                tv_country_detail_name.text = it.name
-                tv_country_detail_area.text = it.area.toString()
+                tv_country_detail_name.text = "  " + it.name
+                tv_country_detail_area.text = "  " + it.area.toString()
                 tv_country_detail_borders.text = getBorders(it.borders)
-                tv_country_detail_language.text = getLanguages(it.languages)
-                tv_country_detail_capital.text = it.capital
-                tv_country_detail_subregion.text = it.subregion
-                tv_country_detail_population.text = it.population.toString()
+                tv_country_detail_language.text = "  " + getLanguages(it.languages)
+                tv_country_detail_capital.text = "  " + it.capital
+                tv_country_detail_subregion.text = "  " + it.subregion
+                tv_country_detail_population.text = "  " + it.population.toString()
                 it.flag?.let { it1 -> img_country_detail_flag.imageDownload(it1) }
             }
         })
@@ -50,8 +50,12 @@ class CountryDetailFragment : Fragment() {
     private fun getLanguages(languages: List<Language>?): String? {
         var languageName = ""
         languages?.let {
-            it.forEach {
-                languageName += "-" + it.name.toString()
+            it.forEachIndexed { index, language ->
+                if (it.size - index > 1)
+                    languageName += language.name.toString() + ", "
+                else
+                    languageName += language.name.toString()
+
             }
         }
         return languageName
@@ -61,7 +65,7 @@ class CountryDetailFragment : Fragment() {
         var bordersName = ""
         borders?.let {
             it.forEach {
-                bordersName +=  "-" + it.toString()
+                bordersName += "-" + it.toString()
             }
         }
         return bordersName
