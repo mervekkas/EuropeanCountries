@@ -55,17 +55,19 @@ class CountryListFragment : Fragment(), CountryListRecyclerAdapter.CountryAdapte
 
     private fun setToolBar() {
         tool_bar_title.setText(R.string.list_title)
+        img_tool_bar_back.visibility = View.GONE
         getQueryTextListener()
     }
 
     private fun getQueryTextListener() {
         tool_bar_search_view.setOnQueryTextListener(object  : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                TODO("Not yet implemented")
+                viewModel.dataSearchResponse(query)
+                return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                TODO("Not yet implemented")
+                return false
             }
         })
     }
@@ -89,8 +91,6 @@ class CountryListFragment : Fragment(), CountryListRecyclerAdapter.CountryAdapte
             it?.let {
                 if (it)
                     loadingVisible()
-                else
-                    listVisible()
             }
         })
     }
