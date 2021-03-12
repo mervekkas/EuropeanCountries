@@ -20,4 +20,7 @@ class CountryApiService {
     fun getData() : Single<List<Country>> {
         return api.getCountry()
     }
+    fun getSearchCountry(searchString: String) : Single<List<Country>> {
+        return api.getSearchCountry(searchString)
+    }
 }

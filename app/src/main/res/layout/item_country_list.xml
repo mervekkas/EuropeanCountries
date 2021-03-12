@@ -22,8 +22,10 @@
                 android:id="@+id/tv_country_item_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxWidth="200dp"
                 style="@style/TextBold"
                 android:text="Belgium"
+                android:lines="2"
                 android:layout_gravity="start"/>
 
             <TextView
@@ -65,6 +67,7 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
 
         <ImageView
+            android:id="@+id/img_list_to_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_iconfinder_double_arrow_right_1954526"

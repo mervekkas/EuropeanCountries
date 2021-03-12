@@ -1,5 +1,6 @@
 package com.mvks.europeancountries.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mvks.europeancountries.model.Country
@@ -40,10 +41,32 @@ class CountryListViewModel : ViewModel() {
         )
     }
 
+    fun dataSearchResponse(searchString: String?) {
+        if (searchString != null) {
+            loading.value = true
+            disposable.add(
+                countryApiService.getSearchCountry(searchString)
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(object : DisposableSingleObserver<List<Country>>() {
+                        override fun onSuccess(t: List<Country>) {
+                            onSuccesValue(t)
+                        }
+
+                        override fun onError(e: Throwable) {
+                            onErrorValue(e)
+                        }
+
+                    })
+            )
+        }
+    }
+
     private fun onErrorValue(e: Throwable) {
-        countryErroMessage.value = false
-        loading.value = true
-        e.printStackTrace()
+        countryErroMessage.value = true
+        loading.value = false
+        countryList.value = mutableListOf()
+        Log.e("asd",e.localizedMessage)
     }
 
     private fun onSuccesValue(countryL: List<Country>) {

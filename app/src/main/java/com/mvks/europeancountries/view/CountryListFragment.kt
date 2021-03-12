@@ -1,9 +1,8 @@
 package com.mvks.europeancountries.view
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
@@ -15,6 +14,7 @@ import com.mvks.europeancountries.model.Country
 import com.mvks.europeancountries.viewmodel.CountryDetailViewModel
 import com.mvks.europeancountries.viewmodel.CountryListViewModel
 import kotlinx.android.synthetic.main.fragment_country_list.*
+import kotlinx.android.synthetic.main.tool_bar_layout.*
 
 class CountryListFragment : Fragment(), CountryListRecyclerAdapter.CountryAdapterListener {
     private lateinit var viewModel: CountryListViewModel
@@ -31,6 +31,7 @@ class CountryListFragment : Fragment(), CountryListRecyclerAdapter.CountryAdapte
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_country_list, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,6 +40,7 @@ class CountryListFragment : Fragment(), CountryListRecyclerAdapter.CountryAdapte
         viewModel = ViewModelProviders.of(this).get(CountryListViewModel::class.java)
         viewModel.refreshData()
 
+        setToolBar()
         rv_country_list.layoutManager = LinearLayoutManager(context)
         rv_country_list.adapter = recyclerCountryAdapter
         swipeRefreshLayout.setOnRefreshListener {
@@ -49,6 +51,25 @@ class CountryListFragment : Fragment(), CountryListRecyclerAdapter.CountryAdapte
             swipeRefreshLayout.isRefreshing = false
         }
         observeLiveData()
+    }
+
+    private fun setToolBar() {
+        tool_bar_title.setText(R.string.list_title)
+        img_tool_bar_back.visibility = View.GONE
+        getQueryTextListener()
+    }
+
+    private fun getQueryTextListener() {
+        tool_bar_search_view.setOnQueryTextListener(object  : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                viewModel.dataSearchResponse(query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
     }
 
     fun observeLiveData() {
@@ -70,8 +91,6 @@ class CountryListFragment : Fragment(), CountryListRecyclerAdapter.CountryAdapte
             it?.let {
                 if (it)
                     loadingVisible()
-                else
-                    listVisible()
             }
         })
     }
@@ -96,6 +115,12 @@ class CountryListFragment : Fragment(), CountryListRecyclerAdapter.CountryAdapte
     override fun onClicked(model: Country) {
         val fragment = CountryDetailFragment()
         fragment.countryLiveData.value = model
-        fragmentManager?.beginTransaction()?.replace(R.id.container_main, fragment)?.addToBackStack("Tag")?.commit()
+        fragmentManager?.beginTransaction()?.replace(R.id.container_main, fragment)
+            ?.addToBackStack("Tag")?.commit()
     }
+
 }
+
+
+
+

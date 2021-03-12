@@ -1,9 +1,8 @@
 <resources>
     <string name="app_name">EuropeanCountries</string>
-    <string name="error_message">Hata! Tekrar Deneyiniz</string>
-    <string name="sirala">Sırala</string>
-    <string name="filtrele">Filtrele</string>
-    <string name="ara">Ara</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="error_message">Country Not Found</string>
+    <string name="sirala">Sort</string>
+    <string name="filtrele">Filter</string>
+    <string name="ara">Search</string>
+    <string name="list_title">European Countries</string>
 </resources>

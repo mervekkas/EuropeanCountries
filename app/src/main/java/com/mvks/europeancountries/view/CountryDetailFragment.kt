@@ -14,10 +14,12 @@ import com.mvks.europeancountries.model.Language
 import com.mvks.europeancountries.util.imageDownload
 import com.mvks.europeancountries.viewmodel.CountryDetailViewModel
 import kotlinx.android.synthetic.main.fragment_country_detail.*
+import kotlinx.android.synthetic.main.tool_bar_layout.*
 
 class CountryDetailFragment : Fragment() {
     val countryLiveData = MutableLiveData<Country>()
     private lateinit var viewModel: CountryDetailViewModel
+    private lateinit var countryName: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,9 +34,26 @@ class CountryDetailFragment : Fragment() {
         observeLiveData()
     }
 
+    private fun setToolBar() {
+        tool_bar_title.text = countryName
+        tool_bar_search_view.visibility = View.GONE
+        img_toolBar_filter.visibility = View.GONE
+        img_toolBar_sort.visibility = View.GONE
+        line_tool_bar.visibility = View.GONE
+        img_tool_bar_back.visibility = View.VISIBLE
+        backClick()
+    }
+
+    private fun backClick() {
+        img_tool_bar_back.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+    }
+
     fun observeLiveData() {
         countryLiveData.observe(viewLifecycleOwner, Observer {
             it?.let {
+                countryName = it.name.toString()
                 tv_country_detail_name.text = "  " + it.name
                 tv_country_detail_area.text = "  " + it.area.toString()
                 tv_country_detail_borders.text = getBorders(it.borders)
@@ -43,6 +62,7 @@ class CountryDetailFragment : Fragment() {
                 tv_country_detail_subregion.text = "  " + it.subregion
                 tv_country_detail_population.text = "  " + it.population.toString()
                 it.flag?.let { it1 -> img_country_detail_flag.imageDownload(it1) }
+                setToolBar()
             }
         })
     }
