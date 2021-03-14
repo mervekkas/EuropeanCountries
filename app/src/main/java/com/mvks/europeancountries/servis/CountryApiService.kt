@@ -23,4 +23,7 @@ class CountryApiService {
     fun getSearchCountry(searchString: String) : Single<List<Country>> {
         return api.getSearchCountry(searchString)
     }
+    fun getLanguageFilter(filterLang: String) : Single<List<Country>> {
+        return api.getLanguageFilter(filterLang)
+    }
 }

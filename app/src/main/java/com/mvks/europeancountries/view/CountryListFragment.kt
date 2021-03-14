@@ -11,19 +11,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.mvks.europeancountries.R
 import com.mvks.europeancountries.adapter.CountryListRecyclerAdapter
 import com.mvks.europeancountries.model.Country
+import com.mvks.europeancountries.model.LanguageFilter
 import com.mvks.europeancountries.viewmodel.CountryDetailViewModel
 import com.mvks.europeancountries.viewmodel.CountryListViewModel
 import kotlinx.android.synthetic.main.fragment_country_list.*
 import kotlinx.android.synthetic.main.tool_bar_layout.*
 
-class CountryListFragment : Fragment(), CountryListRecyclerAdapter.CountryAdapterListener {
+class CountryListFragment : Fragment(), CountryListRecyclerAdapter.CountryAdapterListener, BottomSheetLanguageFragment.BSheetLanguageListener {
     private lateinit var viewModel: CountryListViewModel
     private val recyclerCountryAdapter = CountryListRecyclerAdapter(arrayListOf(), this)
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +39,12 @@ class CountryListFragment : Fragment(), CountryListRecyclerAdapter.CountryAdapte
         setToolBar()
         rv_country_list.layoutManager = LinearLayoutManager(context)
         rv_country_list.adapter = recyclerCountryAdapter
+
+        setListener()
+        observeLiveData()
+    }
+
+    private fun setListener(){
         swipeRefreshLayout.setOnRefreshListener {
             progress_country_list.visibility = View.VISIBLE
             tv_country_list_error_message.visibility = View.GONE
@@ -50,9 +52,13 @@ class CountryListFragment : Fragment(), CountryListRecyclerAdapter.CountryAdapte
             viewModel.refreshData()
             swipeRefreshLayout.isRefreshing = false
         }
-        observeLiveData()
-    }
 
+        img_toolBar_filter.setOnClickListener {
+            val dialog = BottomSheetLanguageFragment(LanguageFilter.SupplierLanguage.language,this)
+            dialog.show(parentFragmentManager,"LanguageList")
+        }
+
+    }
     private fun setToolBar() {
         tool_bar_title.setText(R.string.list_title)
         img_tool_bar_back.visibility = View.GONE
@@ -117,6 +123,10 @@ class CountryListFragment : Fragment(), CountryListRecyclerAdapter.CountryAdapte
         fragment.countryLiveData.value = model
         fragmentManager?.beginTransaction()?.replace(R.id.container_main, fragment)
             ?.addToBackStack("Tag")?.commit()
+    }
+
+    override fun onClickedLanguage(languageText: String) {
+        viewModel.filterLanguage(languageText)
     }
 
 }

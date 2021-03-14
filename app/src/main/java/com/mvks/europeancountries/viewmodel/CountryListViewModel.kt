@@ -66,7 +66,7 @@ class CountryListViewModel : ViewModel() {
         countryErroMessage.value = true
         loading.value = false
         countryList.value = mutableListOf()
-        Log.e("asd",e.localizedMessage)
+        Log.e("asd", e.localizedMessage)
     }
 
     private fun onSuccesValue(countryL: List<Country>) {
@@ -75,4 +75,22 @@ class CountryListViewModel : ViewModel() {
         loading.value = false
     }
 
+    fun filterLanguage(lang: String) {
+        loading.value = true
+        disposable.add(
+            countryApiService.getLanguageFilter(lang)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<List<Country>>() {
+                    override fun onSuccess(t: List<Country>) {
+                        onSuccesValue(t)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        onErrorValue(e)
+                    }
+
+                })
+        )
+    }
 }
