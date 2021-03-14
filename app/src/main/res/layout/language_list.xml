@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="5dp"
+    app:cardCornerRadius="3dp">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutTr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="3dp">
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/imgLanguageFlag"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/example_img"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="17dp" />
+
+        <TextView
+            android:id="@+id/tvLanguageName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Türkçe"
+            android:layout_toRightOf="@+id/imgLanguageFlag"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="25dp" />
+
+        <ImageView
+            android:id="@+id/imgCheck"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_switch_off"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="32dp"
+            android:layout_marginTop="29dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="17dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginRight="32dp"
+            android:layout_below="@id/imgLanguageFlag"
+            android:background="@color/colorLine" />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
